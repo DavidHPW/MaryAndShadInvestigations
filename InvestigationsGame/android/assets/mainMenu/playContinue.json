@@ -1,0 +1,15 @@
+
+{
+  "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
+
+    "default": {
+
+      "up": "bouttonContinuer",
+
+      "down": "bouttonContinuer_PUSH",
+
+      "unpressedOffsetY":-10,
+
+    }
+  }
+}

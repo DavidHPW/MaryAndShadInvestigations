@@ -1,0 +1,20 @@
+
+settingMenuPack.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bouttonSettings_NORM
+  rotate: false
+  xy: 222, 2
+  size: 218, 251
+  orig: 218, 251
+  offset: 0, 0
+  index: -1
+bouttonSettings_PUSH
+  rotate: false
+  xy: 2, 2
+  size: 218, 251
+  orig: 218, 251
+  offset: 0, 0
+  index: -1

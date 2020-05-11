@@ -1,0 +1,20 @@
+
+quitMenuPack.png
+size: 256,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bouttonQuitter_NORM
+  rotate: false
+  xy: 2, 2
+  size: 148, 269
+  orig: 148, 269
+  offset: 0, 0
+  index: -1
+bouttonQuitter_PUSH
+  rotate: false
+  xy: 2, 273
+  size: 148, 269
+  orig: 148, 269
+  offset: 0, 0
+  index: -1
