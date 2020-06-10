@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.investigations.game.camera.AndroidCamera;
 
-public class MainMenuScreen implements Screen {
+public class TitleScreen implements Screen {
 
     private float WIDTH, HEIGHT;
     private Texture mainmenuTexture;
@@ -38,7 +38,7 @@ public class MainMenuScreen implements Screen {
     private Table mainmenuTablePlayQuit;
 
 
-    public MainMenuScreen() {
+    public TitleScreen() {
     }
 
     @Override

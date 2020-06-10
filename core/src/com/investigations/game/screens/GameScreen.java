@@ -4,14 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.investigations.game.camera.AndroidCamera;
+import com.investigations.game.controllers.Joystick;
 
 public class GameScreen implements Screen {
 
@@ -22,12 +23,16 @@ public class GameScreen implements Screen {
     private Image groundImage;
     private Image wallImage;
 
-    private Table joystickTable;
-    private Touchpad joystick;
-    private Touchpad.TouchpadStyle joystickStyle;
+    private Joystick joystick;
+    private Joystick.TouchpadStyle joystickStyle;
     private Skin joystickSkin;
-    private Drawable vj_background;
-    private Drawable vj_knob;
+    private Drawable joystickBackground;
+    private Drawable joystickKnob;
+
+    private Texture charaTexture;
+    private Sprite  charaSprite;
+    private float charaspeed;
+    private SpriteBatch batch;
 
 
     public GameScreen(){
@@ -48,26 +53,40 @@ public class GameScreen implements Screen {
         groundImage.setSize(1000*3,377*3);
 
 
+        //Joystick
+
         joystickSkin = new Skin();
-        joystickSkin.add("vj_background", new Texture("gameUI/virtual_joystick/VJbackground.png"));
-        joystickSkin.add("vj_knob", new Texture("gameUI/virtual_joystick/VJknob.png"));
-        joystickStyle = new Touchpad.TouchpadStyle();
-        vj_background = joystickSkin.getDrawable("vj_background");
-        vj_knob = joystickSkin.getDrawable("vj_knob");
-        joystickStyle.background = vj_background;
-        joystickStyle.knob = vj_knob;
+        joystickSkin.add("VJbackground", new Texture("gameUI/virtual_joystick/VJbackground.png"));
+        joystickSkin.add("VJknob", new Texture("gameUI/virtual_joystick/VJknob.png"));
 
-        joystick = new Touchpad(50,joystickStyle);
-        joystick.setBounds(15, 15, 250, 250);
-        joystick.setPosition(415F,50F);
+        joystickStyle = new Joystick.TouchpadStyle();
 
-        joystickTable = new Table();
+        joystickBackground = joystickSkin.getDrawable("VJbackground");
+        joystickKnob = joystickSkin.getDrawable("VJknob");
+
+        joystickStyle.background = joystickBackground;
+        joystickStyle.knob = joystickKnob;
+
+        joystick = new Joystick(10, joystickStyle);
+        joystick.setBounds(WIDTH/2,0,200,200);
+
+        //Personage
+        batch = new SpriteBatch();
+        charaTexture = new Texture(Gdx.files.internal("gameUI/virtual_joystick/Mary1.png"));
+        charaSprite = new Sprite(charaTexture);
+
+        charaSprite.setPosition(WIDTH/2,HEIGHT/2);
 
 
-        gameStage = new Stage(new FitViewport(WIDTH, HEIGHT, new AndroidCamera(WIDTH, HEIGHT)));
+        charaspeed = 5;
 
-        gameStage.addActor(groundImage);
+
+
+        //Stage
+        gameStage = new Stage(new FitViewport(WIDTH, HEIGHT, new AndroidCamera(WIDTH, HEIGHT))  , batch);
+       // gameStage.addActor(groundImage);
         gameStage.addActor(joystick);
+        Gdx.input.setInputProcessor(gameStage);
 
 
 
@@ -78,6 +97,16 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gameStage.draw();
+
+        charaSprite.setX(charaSprite.getX() + joystick.getKnobPercentX()*charaspeed);
+        charaSprite.setY(charaSprite.getY() + joystick.getKnobPercentY()*charaspeed);
+
+        batch.begin();
+        charaSprite.draw(batch);
+        batch.end();
+            gameStage.act(Gdx.graphics.getDeltaTime());
+            gameStage.draw();
+
 
     }
 
