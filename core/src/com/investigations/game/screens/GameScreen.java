@@ -68,23 +68,23 @@ public class GameScreen implements Screen {
         joystickStyle.knob = joystickKnob;
 
         joystick = new Joystick(10, joystickStyle);
-        joystick.setBounds(WIDTH/2,0,200,200);
+        joystick.setBounds((WIDTH-200)/2,(HEIGHT-200)/6,200,200);
 
         //Personage
         batch = new SpriteBatch();
         charaTexture = new Texture(Gdx.files.internal("gameUI/virtual_joystick/Mary1.png"));
         charaSprite = new Sprite(charaTexture);
 
-        charaSprite.setPosition(WIDTH/2,HEIGHT/2);
+        charaSprite.setCenter(WIDTH/2,HEIGHT/2);
+        charaSprite.setScale(5,5);
 
-
-        charaspeed = 5;
+        charaspeed = 8;
 
 
 
         //Stage
         gameStage = new Stage(new FitViewport(WIDTH, HEIGHT, new AndroidCamera(WIDTH, HEIGHT))  , batch);
-       // gameStage.addActor(groundImage);
+        gameStage.addActor(groundImage);
         gameStage.addActor(joystick);
         Gdx.input.setInputProcessor(gameStage);
 
@@ -94,18 +94,28 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
+        Gdx.gl.glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gameStage.draw();
 
-        charaSprite.setX(charaSprite.getX() + joystick.getKnobPercentX()*charaspeed);
-        charaSprite.setY(charaSprite.getY() + joystick.getKnobPercentY()*charaspeed);
+        // Met en mouvement le décor, de manière inversé pour donner l'impression que le personnage se déplace
+        groundImage.setX(groundImage.getX() - joystick.getKnobPercentX()*charaspeed );
+        groundImage.setY(groundImage.getY() - joystick.getKnobPercentY()*charaspeed );
+
+
+        // Met en mouvement le personnage
+        //charaSprite.setX(charaSprite.getX() + joystick.getKnobPercentX()*charaspeed);
+        //charaSprite.setY(charaSprite.getY() + joystick.getKnobPercentY()*charaspeed);
+
+       // CameraStyle.lockOnTarget(AndroidCamera, charaSprite.);
+
+        gameStage.act(Gdx.graphics.getDeltaTime());
+        gameStage.draw();
 
         batch.begin();
         charaSprite.draw(batch);
         batch.end();
-            gameStage.act(Gdx.graphics.getDeltaTime());
-            gameStage.draw();
+
 
 
     }
